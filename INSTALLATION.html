@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bunnys Caption: Installation</title>
+  <style>
+    :root {
+      --bg: #08080A; --card: rgba(255, 255, 255, 0.045); --edge: rgba(255, 255, 255, 0.09);
+      --text: rgba(255, 255, 255, 0.94); --muted: rgba(235, 235, 245, 0.62); --faint: rgba(235, 235, 245, 0.38);
+      --code-bg: rgba(255, 255, 255, 0.07); --blue: #1F6BFF; --orange: #FF8A00; --green: #30d158;
+      --brand: linear-gradient(135deg, #1F6BFF 0%, #6A2BFF 50%, #FF1F56 100%);
+      --glow-1: rgba(31, 107, 255, 0.22); --glow-2: rgba(255, 31, 86, 0.14);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text);
+      font: 16px/1.6 "Segoe UI", Inter, -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(45% 35% at 8% 0%, var(--glow-1), transparent 70%),
+                  radial-gradient(40% 30% at 96% 12%, var(--glow-2), transparent 70%); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 48px 16px 64px; }
+    a { color: #6FA0FF; text-decoration: none; } a:hover { text-decoration: underline; }
+    code { font: 0.88em Consolas, Menlo, monospace; background: var(--code-bg); border: 1px solid var(--edge);
+      border-radius: 6px; padding: 1px 6px; word-break: break-word; }
+    .file { font-weight: 600; }
+    .grad { background: var(--brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .hero { display: flex; gap: 20px; align-items: center; margin-bottom: 28px; }
+    .hero img { width: 88px; height: 88px; border-radius: 22px; flex: none; box-shadow: 0 14px 34px rgba(106, 43, 255, 0.4); }
+    h1 { margin: 0; font-size: 44px; line-height: 1.05; letter-spacing: -1.2px; }
+    .tagline { margin: 6px 0 0; font-size: 19px; color: var(--muted); }
+    .byline { margin: 8px 0 0; font-size: 14px; color: var(--faint); }
+
+    .card { background: var(--card); border: 1px solid var(--edge); border-radius: 20px; padding: 24px 26px; margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 6px 0 30px; }
+    .flow a { display: block; text-align: center; padding: 16px 10px; border-radius: 16px; background: var(--card);
+      border: 1px solid var(--edge); color: var(--text); }
+    .flow a:hover { text-decoration: none; border-color: var(--blue); }
+    .flow .n { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+      background: var(--brand); color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    .flow b { display: block; font-size: 14px; line-height: 1.3; }
+    .flow span { display: block; font-size: 12.5px; color: var(--muted); }
+
+    .step-head { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+    .step-head .n { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center;
+      background: var(--brand); color: #fff; font-weight: 700; font-size: 18px; box-shadow: 0 6px 16px rgba(106, 43, 255, 0.35); }
+    h2 { margin: 0; font-size: 24px; letter-spacing: -0.4px; }
+    .lead { color: var(--muted); margin: 0 0 14px 54px; }
+    h3 { font-size: 16px; margin: 20px 0 8px; display: flex; align-items: center; gap: 8px; }
+    .pill { font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--code-bg);
+      border: 1px solid var(--edge); color: var(--muted); }
+    ol, ul { margin: 0; padding-left: 22px; } li { margin: 6px 0; } li::marker { color: var(--faint); font-weight: 600; }
+    .path { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    .path b { background: var(--code-bg); border: 1px solid var(--edge); border-radius: 7px; padding: 0 7px; font-weight: 600; font-size: 14.5px; }
+    .path i { color: var(--faint); font-style: normal; }
+
+    .note { margin-top: 14px; padding: 10px 14px; border-radius: 12px; font-size: 14.5px; color: var(--muted);
+      background: var(--code-bg); border-left: 3px solid var(--blue); }
+    .note.warn { border-left-color: var(--orange); } .note.good { border-left-color: var(--green); }
+
+    .cmd { position: relative; margin: 8px 0; padding: 10px 84px 10px 14px; border-radius: 12px; background: var(--code-bg);
+      border: 1px solid var(--edge); font: 13.5px Consolas, Menlo, monospace; overflow-x: auto; white-space: nowrap; }
+    .copy { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font: 600 12.5px "Segoe UI", sans-serif;
+      padding: 5px 12px; border-radius: 999px; border: 1px solid var(--edge); background: #16161b; color: var(--text); cursor: pointer; }
+    .copy:hover { border-color: var(--blue); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+    th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--edge); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    .must td:first-child { color: var(--green); font-weight: 600; }
+    .size { white-space: nowrap; color: var(--muted); }
+
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .box { border: 1px solid var(--edge); border-radius: 14px; padding: 4px 16px 14px; background: var(--code-bg); }
+    @media (max-width: 680px) { .two { grid-template-columns: 1fr; } }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 12px; font-weight: 600;
+      font-size: 14.5px; border: 1px solid var(--edge); background: var(--card); color: var(--text); }
+    .btn:hover { text-decoration: none; border-color: var(--blue); }
+    footer { text-align: center; color: var(--faint); font-size: 13px; margin-top: 30px; }
+
+    @media (max-width: 680px) {
+      .wrap { padding-top: 28px; } .hero { flex-direction: column; align-items: flex-start; } h1 { font-size: 36px; }
+      .flow { grid-template-columns: 1fr 1fr; } .lead { margin-left: 0; } .card { padding: 20px 16px; }
+      .size { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <img src="Plugin/assets/logo.png" alt="Bunnys Caption logo">
+    <div>
+      <h1><span class="grad">Bunnys Caption</span></h1>
+      <p class="tagline">Installation guide</p>
+      <p class="byline">Windows 10/11 or macOS 12+ · Premiere Pro or After Effects 2023 or newer · <a href="README.html">Read me</a></p>
+    </div>
+  </header>
+
+  <nav class="flow" aria-label="Steps">
+    <a href="#extract"><span class="n">1</span><b>Extract</b><span>to a folder you keep</span></a>
+    <a href="#files"><span class="n">2</span><b>Pick your files</b><span>delete what you don't need</span></a>
+    <a href="#install"><span class="n">3</span><b>Install</b><span>one double-click</span></a>
+    <a href="#connect"><span class="n">4</span><b>Connect</b><span>in Premiere, once</span></a>
+  </nav>
+
+  <!-- STEP 1 -->
+  <section class="card" id="extract">
+    <div class="step-head"><span class="n">1</span><h2>Extract the zip</h2></div>
+    <p class="lead">Put it somewhere it can stay. The plugin reads its models from this folder.</p>
+    <ol>
+      <li>Windows: right-click <span class="file">Bunnys Caption v1.2.0.zip</span> → <b>Extract All…</b> · Mac: double-click the zip.</li>
+      <li>Choose a folder you will keep, for example <code>E:\Bunnys Caption</code> → <b>Extract</b>.</li>
+    </ol>
+    <div class="note warn">Don't extract to Downloads or Desktop if you clean them often. If this folder is deleted or moved,
+      captions stop working until you point the plugin to it again (step 4).</div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="card" id="files">
+    <div class="step-head"><span class="n">2</span><h2>Keep only the files you need</h2></div>
+    <p class="lead">Open <span class="path"><b>Bunnys Caption v1.2.0</b><i>›</i><b>Offline Files</b></span>. Delete the folders you don't need to save space.</p>
+    <table>
+      <tr><th>Folder</th><th>Size</th><th>Who needs it</th></tr>
+      <tr class="must"><td>1 - REQUIRED for everyone</td><td class="size">9 MB</td><td>Everyone. Never delete.</td></tr>
+      <tr><td>2 - NVIDIA GPU</td><td class="size">940 MB</td><td>Only Windows PCs with an NVIDIA card. Keep <b>one</b> file:<br>RTX 20-50 → <i>CUDA 12</i> · GTX 10/16 → <i>CUDA 11</i></td></tr>
+      <tr><td>3 - English captions</td><td class="size">280 MB</td><td>English videos. Keep <b>one</b> model, <i>Recommended (Base)</i> is best for most.</td></tr>
+      <tr><td>4 - Bangla and Banglish captions</td><td class="size">540 MB</td><td>Bangla videos.</td></tr>
+      <tr><td>5 - Hindi, Hinglish and other languages</td><td class="size">1.9 GB</td><td>Keep <b>one</b> model, <i>Best for Hindi (Large v3 Turbo)</i> for Hindi.</td></tr>
+      <tr><td>6 - Translator</td><td class="size">2.8 GB</td><td>Only for English captions from Bangla or Hindi speech. Keep the model plus <b>one</b> engine (CPU or NVIDIA).</td></tr>
+    </table>
+    <h3>Examples</h3>
+    <table>
+      <tr><th>I make…</th><th>Keep folders</th><th>Total</th></tr>
+      <tr><td>English videos</td><td>1 + 3</td><td class="size">≈ 70 MB</td></tr>
+      <tr><td>English videos, NVIDIA RTX</td><td>1 + 2 + 3</td><td class="size">≈ 740 MB</td></tr>
+      <tr><td>Bangla or Banglish captions</td><td>1 + 4 (+ 2 with NVIDIA)</td><td class="size">≈ 550 MB</td></tr>
+      <tr><td>Bangla speech, English captions</td><td>1 + 4 + 6 (+ 2 with NVIDIA)</td><td class="size">≈ 3.3 GB</td></tr>
+      <tr><td>Hindi or Hinglish captions</td><td>1 + 5 (+ 2 with NVIDIA)</td><td class="size">≈ 590 MB</td></tr>
+    </table>
+    <div class="note good">Changed your mind later? Copy the folder back from the zip and repeat step 4.</div>
+    <div class="note"><b>On Mac</b> only the model files are used (folders 3, 4, 5 and the Translator Model in 6), plus the Voice Detector in folder 1.
+      Delete folder 2 and the <i>.zip</i> files: the Mac engines come from Homebrew in step 3.</div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="card" id="install">
+    <div class="step-head"><span class="n">3</span><h2>Install the plugin</h2></div>
+    <p class="lead">One double-click. Open <span class="path"><b>Bunnys Caption v1.2.0</b><i>›</i><b>Plugin</b></span> first.</p>
+    <div class="two">
+      <div class="box">
+        <h3>Windows</h3>
+        <ol>
+          <li>Close Premiere Pro.</li>
+          <li>Double-click <span class="file">Install on Windows.bat</span>.<br>
+            <small style="color:var(--muted)">If Windows warns you: <b>More info</b> → <b>Run anyway</b>.</small></li>
+          <li>Wait for <b>Done</b>, then press any key.</li>
+        </ol>
+      </div>
+      <div class="box">
+        <h3>Mac</h3>
+        <ol>
+          <li>Quit Premiere Pro.</li>
+          <li>Double-click <span class="file">Install on Mac.command</span>.<br>
+            <small style="color:var(--muted)">If macOS blocks it: right-click the file → <b>Open</b> → <b>Open</b>.</small></li>
+          <li>Answer <b>Y</b> to install the speech engine (needs <a href="https://brew.sh">Homebrew</a> and internet, once).</li>
+          <li>Wait for <b>All done!</b>, then press any key.</li>
+        </ol>
+      </div>
+    </div>
+    <h3>Open it</h3>
+    <p style="margin:0">Open Premiere Pro or After Effects and any project → <b>Window → Extensions → Bunnys Caption</b>. Dock the panel anywhere. In After Effects, open the composition you want to caption first.</p>
+    <div class="note">The installer copies the plugin into Premiere and turns on Adobe's <code>PlayerDebugMode</code>,
+      which Premiere needs to load panels that aren't signed by Adobe. It only affects your user account.</div>
+
+    <h3>Manual install on Windows <span class="pill">only if the installer fails</span></h3>
+    <ol>
+      <li>Copy the <span class="file">Plugin</span> folder.</li>
+      <li>Paste this in the File Explorer address bar and press Enter (create <b>extensions</b> if it's missing):
+        <div class="cmd">%APPDATA%\Adobe\CEP\extensions<button class="copy">Copy</button></div></li>
+      <li>Paste the folder there and rename it to <code>com.bunnysframelab.caption</code>.</li>
+      <li>Press Windows key → type <b>cmd</b> → open <b>Command Prompt</b> → paste and press Enter:
+        <div class="cmd">for %v in (11 12 13) do reg add "HKCU\Software\Adobe\CSXS.%v" /v PlayerDebugMode /t REG_SZ /d 1 /f<button class="copy">Copy</button></div></li>
+      <li>Open Premiere → <b>Window → Extensions → Bunnys Caption</b>.</li>
+    </ol>
+
+    <h3>Manual install on Mac <span class="pill">only if the installer fails</span></h3>
+    <ol>
+      <li>Open <b>Terminal</b> (Applications → Utilities) and paste each line, pressing Enter after each:
+        <div class="cmd">mkdir -p ~/Library/Application\ Support/Adobe/CEP/extensions<button class="copy">Copy</button></div>
+        <div class="cmd">for v in 11 12 13; do defaults write com.adobe.CSXS.$v PlayerDebugMode 1; done<button class="copy">Copy</button></div>
+        <div class="cmd">brew install whisper-cpp<button class="copy">Copy</button></div></li>
+      <li>In Finder press <b>Shift+Cmd+G</b>, paste <code>~/Library/Application Support/Adobe/CEP/extensions</code> and press Enter.</li>
+      <li>Copy the <span class="file">Plugin</span> folder there and rename it to <code>com.bunnysframelab.caption</code>.</li>
+      <li>Open Premiere → <b>Window → Extensions → Bunnys Caption</b>.</li>
+    </ol>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="card" id="connect">
+    <div class="step-head"><span class="n">4</span><h2>Connect the engine and model</h2></div>
+    <p class="lead">Once, in the Bunnys Caption panel.</p>
+    <ol>
+      <li><b>Settings</b> tab → <b>Offline files</b> → <b>Choose folder</b>.</li>
+      <li>Select <span class="path"><b>Bunnys Caption v1.2.0</b><i>›</i><b>Offline Files</b></span> → <b>Select Folder</b>.</li>
+      <li>Click <b>Install all from folder</b> and wait for <b>Installed: …</b> (on Mac it only finds the models).</li>
+      <li><b>Settings → Processor</b>: <i>Auto (GPU if installed)</i> with NVIDIA, <i>CPU only</i> without. On Mac leave it on <i>Auto</i>:
+        the Homebrew engine uses the Apple GPU by itself.</li>
+      <li><b>Settings → Model</b>: pick the model for your language (table below).</li>
+    </ol>
+
+    <h3>Which model to pick</h3>
+    <table>
+      <tr><th>Your video</th><th>Generate → Language</th><th>Settings → Model</th></tr>
+      <tr><td>English</td><td>English</td><td>Base English</td></tr>
+      <tr><td>Bangla, Bangla text</td><td>Bangla speech → Bangla script</td><td>Bangla Pro</td></tr>
+      <tr><td>Bangla, Banglish text</td><td>Bangla speech → Banglish</td><td>Bangla Pro</td></tr>
+      <tr><td>Bangla, English text</td><td>Bangla speech → English translation</td><td>Bangla Pro + Translator</td></tr>
+      <tr><td>Hindi or Hinglish</td><td>Hindi speech → Hindi script / Hinglish</td><td>Large v3 Turbo</td></tr>
+      <tr><td>Hindi, English text</td><td>Hindi speech → English translation</td><td>Large v3 Turbo + Translator</td></tr>
+      <tr><td>Any other language</td><td>Any other language → English translation</td><td>Large v3 Turbo</td></tr>
+    </table>
+
+    <h3>Make your first captions</h3>
+    <ol>
+      <li>Open a sequence with your video.</li>
+      <li><b>Generate</b> tab → Language → <b>Transcribe</b>.</li>
+      <li>Check the text → <b>Add captions</b>. Each caption lands on the timeline as its own clip.</li>
+    </ol>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section class="card">
+    <h2 style="margin-bottom:10px">If something isn't right</h2>
+    <table>
+      <tr><th>Problem</th><th>Fix</th></tr>
+      <tr><td>Not in Window → Extensions</td><td>Run the installer again, then quit Premiere completely and reopen it.</td></tr>
+      <tr><td>The panel opens blank</td><td>Close Premiere, run the installer again.</td></tr>
+      <tr><td>Mac: "Speech engine not installed"</td><td>Open Terminal and run <code>brew install whisper-cpp</code>, then restart Premiere.</td></tr>
+      <tr><td>Mac: translation does not start</td><td>Open Terminal and run <code>brew install llama.cpp</code>.</td></tr>
+      <tr><td>"Engine not installed" or no models</td><td>Repeat step 4 and make sure you picked the <b>Offline Files</b> folder.</td></tr>
+      <tr><td>"No empty video track"</td><td>Sequence → Add Tracks → add 1 video track.</td></tr>
+      <tr><td>Wrong or missing font</td><td>Install the font in Windows, or pick another one in the Customize tab.</td></tr>
+      <tr><td>Anything else</td><td>Settings → <b>Run self-test</b>. The report is saved to <code>%APPDATA%\BunnysFramelab\BunnysCaption\selftest.log</code></td></tr>
+      <tr><td>Uninstall</td><td>Close Premiere, double-click <span class="file">Uninstall on Windows.bat</span> or <span class="file">Uninstall on Mac.command</span> in the Plugin folder.
+        Saved styles stay in <code>%APPDATA%\BunnysFramelab</code> (Windows) or <code>~/Library/Application Support/BunnysFramelab</code> (Mac).</td></tr>
+    </table>
+  </section>
+
+  <section class="card" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+    <span style="color:var(--muted)">Need help? Message us.</span>
+    <span style="display:flex;gap:10px;flex-wrap:wrap">
+      <a class="btn" href="https://www.instagram.com/bunnysframelab">📸 Instagram</a>
+      <a class="btn" href="https://framelabmedia.odoo.com">🌐 Website</a>
+    </span>
+  </section>
+
+  <footer>Bunnys Caption 1.2.0 · Made by Bunnys Framelab. Premiere Pro and After Effects are trademarks of Adobe; Bunnys Caption is not made by Adobe.</footer>
+</div>
+
+<script>
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentNode.textContent.replace(btn.textContent, '').trim();
+      var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+      function fallback() {
+        var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+        try { document.execCommand('copy'); done(); } catch (e) {} t.remove();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+    });
+  });
+</script>
+</body>
+</html>

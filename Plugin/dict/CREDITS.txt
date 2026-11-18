@@ -1,0 +1,3 @@
+Word frequency lists used for Bangla / Hindi spelling fixes:
+FrequencyWords by Hermit Dave - https://github.com/hermitdave/FrequencyWords
+Content licensed CC BY-SA 4.0. Built from OpenSubtitles (http://www.opensubtitles.org/).

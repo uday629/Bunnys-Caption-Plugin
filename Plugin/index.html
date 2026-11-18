@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bunnys Caption</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="hdr">
+  <img src="assets/logo_64.png" alt="" class="logo">
+  <div class="brand">
+    <div class="title">Bunnys Caption</div>
+    <div class="by">by Bunnys Framelab</div>
+  </div>
+  <div class="seq" id="seqInfo" title="Active sequence">No sequence</div>
+  <div class="ur">
+    <button id="btnUndo" title="Undo the last Bunnys Caption change (Ctrl+Z)" disabled><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M12.5 8c-2.65 0-5.05 1-6.9 2.6L2 7v9h9l-3.6-3.6c1.4-1.2 3.2-1.9 5.1-1.9 3.5 0 6.5 2.3 7.6 5.5l2.4-.8C21 11 17.1 8 12.5 8z"/></svg></button>
+    <button id="btnRedo" title="Redo (Ctrl+Y)" disabled><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M18.4 10.6C16.6 9 14.2 8 11.5 8 6.9 8 3 11 1.5 15.2l2.4.8c1.1-3.2 4.1-5.5 7.6-5.5 1.9 0 3.7.7 5.1 1.9L13 16h9V7l-3.6 3.6z"/></svg></button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-tab="generate" class="on">Generate</button>
+  <button data-tab="styles">Styles</button>
+  <button data-tab="custom">Customize</button>
+  <button data-tab="edit">Edit</button>
+  <button data-tab="settings">Settings</button>
+</nav>
+
+<main>
+  <!-- ================= GENERATE ================= -->
+  <section id="tab-generate" class="tab on">
+    <div class="card">
+      <h3><span class="n">1</span>Transcribe audio</h3>
+      <div class="row">
+        <label>Range</label>
+        <div class="seg" id="rangeSeg">
+          <button data-v="all" class="on">Whole sequence</button>
+          <button data-v="inout">In to Out</button>
+        </div>
+      </div>
+      <div class="row top">
+        <label>Audio tracks</label>
+        <div class="chips" id="audioTracks"><span class="muted">Open a sequence</span></div>
+      </div>
+      <div class="row">
+        <label>Language</label>
+        <select id="langSel">
+          <option value="en">English</option>
+          <optgroup label="Bangla speech">
+            <option value="bn">Bangla script (&#2476;&#2494;&#2434;&#2482;&#2494;)</option>
+            <option value="bn-roman">Banglish (Bangla in English letters)</option>
+            <option value="bn-en">English translation</option>
+          </optgroup>
+          <optgroup label="Hindi speech">
+            <option value="hi">Hindi script (&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;)</option>
+            <option value="hi-roman">Hinglish (Hindi in English letters)</option>
+            <option value="hi-en">English translation</option>
+          </optgroup>
+          <optgroup label="Any other language">
+            <option value="auto-en">English translation</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="btnTranscribe">Transcribe</button>
+        <button class="btn" id="btnImportSrt" title="Use an SRT/VTT, e.g. exported from Premiere's own Transcript panel">Import SRT</button>
+        <button class="btn ghost" id="btnLoadLast" title="Reload the last transcript of this sequence">Load last</button>
+      </div>
+      <p class="hint small" id="langHint"></p>
+      <div id="langFix" class="hidden">
+        <label class="check"><input type="checkbox" id="fixSpell" checked> Fix spelling to the closest real word (only when sure)</label>
+        <label class="check"><input type="checkbox" id="fixStd" checked> Regional words to standard Bangla (কইরা &#8594; করে, যামু &#8594; যাবো)</label>
+        <label class="check"><input type="checkbox" id="fixEng" checked> Write English words in English (effect, template, comment...)</label>
+      </div>
+      <div class="prog hidden" id="progT"><div class="bar"><i></i></div><div class="ptxt"></div><button class="link" data-cancel="t">Cancel</button></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="n">2</span>Caption rules</h3>
+      <label class="check"><input type="checkbox" id="useStyleRules" checked> Use the selected style's recommended rules</label>
+      <div class="row"><label>Words per caption</label><input type="range" id="rWords" min="1" max="12" step="1"><output></output></div>
+      <div class="row"><label>Characters per line</label><input type="range" id="rChars" min="6" max="44" step="1"><output></output></div>
+      <div class="row"><label>Lines</label>
+        <div class="seg" id="rLines"><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button></div>
+      </div>
+      <div class="row"><label>Text case</label>
+        <select id="rCase"><option value="style">Style default</option><option value="upper">UPPERCASE</option><option value="as">As spoken</option><option value="lower">lowercase</option></select>
+      </div>
+      <div class="row"><label>Punctuation</label>
+        <select id="rPunct"><option value="keep">Keep</option><option value="soft">Remove trailing . , ; :</option><option value="all">Remove all</option></select>
+      </div>
+      <div class="row"><label>Main words</label>
+        <select id="rKeys"><option value="off">Don't detect</option><option value="low">Detect: few</option><option value="normal">Detect: 1 per caption</option><option value="high">Detect: more</option></select>
+      </div>
+      <label class="check"><input type="checkbox" id="rFillers" checked> Remove filler words (um, uh)</label>
+      <label class="check"><input type="checkbox" id="rBreak" checked> Start a new caption after sentences</label>
+      <div class="row"><label>Time on screen, min (s)</label><input type="range" id="rMin" min="0.2" max="3" step="0.1"><output></output></div>
+      <div class="row"><label>Time on screen, max (s)</label><input type="range" id="rMax" min="0.5" max="10" step="0.5"><output></output></div>
+      <details>
+        <summary>More timing</summary>
+        <div class="row"><label>Split on pause (s)</label><input type="range" id="rGap" min="0.2" max="2" step="0.1"><output></output></div>
+        <div class="row"><label>Hold after speech (s)</label><input type="range" id="rLinger" min="0" max="1" step="0.05"><output></output></div>
+        <div class="row"><label>Sync offset (s)</label><input type="range" id="rOffset" min="-1" max="1" step="0.05"><output></output></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3><span class="n">3</span>Review <span class="muted small" id="capCount"></span></h3>
+      <div class="seg" id="reviewMode"><button data-v="hl">Select words to highlight</button><button data-v="edit">Edit text</button></div>
+      <p class="hint" id="reviewHint">Click a word to highlight it (color / box). Click again to remove.</p>
+      <div class="caplist" id="capList"><div class="empty">Transcribe or import to see captions here.</div></div>
+      <div class="actions">
+        <button class="btn ghost" id="btnResplit">Re-detect main words</button>
+        <button class="btn ghost" id="btnSrt">Export SRT</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="n">4</span>Add to timeline</h3>
+      <div class="cur-style" id="curStyle"></div>
+      <details class="gopts" open>
+        <summary>Options for these captions <button class="link small" id="gReset" type="button">Reset to style</button></summary>
+        <div class="row"><label>Caption font</label><div id="gFont"></div></div>
+        <div class="row"><label>Emphasis font</label><div id="gPunchFont"></div></div>
+        <div class="row"><label>Entry animation</label><select id="gAnim"><option value="">Style default</option><option value="none">None</option><option value="pop">Pop</option><option value="fade">Fade</option><option value="slide">Slide up</option><option value="bounce">Bounce</option><option value="zoom">Zoom out</option><option value="flicker">Flicker reveal</option><option value="slam">Letter slam</option><option value="type">Typewriter</option><option value="blurin">Blur in</option><option value="glitch">Glitch</option><option value="drop">Word drop</option></select></div>
+        <div class="row"><label>Highlight</label><select id="gHl"><option value="">Style default</option><option value="off">Off</option><option value="active">Word being spoken</option><option value="keywords">Main words only</option><option value="keywordsSpoken">Main words, when spoken</option><option value="fill">Fill as spoken</option></select></div>
+        <div class="row"><label>Box</label><select id="gBox"><option value="">Style default</option><option value="off">Off</option><option value="caption">Whole caption</option><option value="word">Highlighted word</option><option value="emphasis">Emphasis line</option><option value="strike">Strike-through</option></select></div>
+        <div class="row"><label>Size %</label><input type="range" id="gScale" min="30" max="300" step="1"><output></output></div>
+        <div class="row"><label>Vertical position %</label><input type="range" id="gPosY" min="5" max="95" step="1"><output></output></div>
+      </details>
+      <div class="row"><label>Video track</label><select id="trackSel"><option value="-1">Auto (empty track)</option></select></div>
+      <label class="check"><input type="checkbox" id="replaceOld"> Replace earlier Bunnys captions on that track</label>
+      <div class="actions">
+        <button class="btn primary big" id="btnInsert">Add captions</button>
+      </div>
+      <div class="prog hidden" id="progI"><div class="bar"><i></i></div><div class="ptxt"></div><button class="link" data-cancel="i">Cancel</button></div>
+    </div>
+  </section>
+
+  <!-- ================= STYLES ================= -->
+  <section id="tab-styles" class="tab">
+    <div class="toolbar">
+      <input type="search" id="styleSearch" placeholder="Search styles">
+      <div class="chips small" id="styleTags"></div>
+    </div>
+    <div class="actions tight">
+      <button class="btn primary" id="btnApplySel" title="Select Bunnys caption clips in the timeline first">Apply to selected clips</button>
+      <button class="btn" id="btnCapture" title="Turn a caption you tweaked in Effect Controls into a preset">Capture from clip</button>
+      <button class="btn ghost" id="btnImportStyle" title="Import a .json preset or your own .mogrt">Import</button>
+    </div>
+    <div class="grid" id="styleGrid"></div>
+  </section>
+
+  <!-- ================= CUSTOMIZE ================= -->
+  <section id="tab-custom" class="tab">
+    <!-- fixed on top: the live preview -->
+    <div class="cs-pin">
+      <div class="stage" id="editPreview"></div>
+      <div class="cs-bar">
+        <input type="text" id="eName" placeholder="Preset name">
+        <button class="btn small ghost" id="btnResetStyle" title="Throw away the changes and go back to the style as saved">Reset</button>
+        <label class="check small" title="Every change goes straight to the caption clips selected in the timeline"><input type="checkbox" id="liveEdit"> Live</label>
+      </div>
+    </div>
+
+    <!-- everything that scrolls -->
+    <div class="cs-scroll">
+      <div class="sec mogrt-only" id="mogrtSetup"></div>
+      <details class="sec" open>
+        <summary>Text</summary>
+        <div class="row"><label>Layout</label>
+          <div class="seg" id="eLayout"><button data-v="single">One block</button><button data-v="duo">Emphasis below</button><button data-v="duoTop">Emphasis on top</button></div>
+        </div>
+        <div class="row"><label>Text case</label>
+          <select data-k="textCase"><option value="upper">UPPERCASE</option><option value="as">As spoken</option><option value="lower">lowercase</option><option value="title">First letter capital</option></select>
+        </div>
+        <div class="row"><label>Caption font</label><div id="eFont"></div></div>
+        <div class="row"><label>Caption style</label>
+          <div class="checks"><label class="check small"><input type="checkbox" data-k="fauxBold"> Bold</label><label class="check small"><input type="checkbox" data-k="fauxItalic"> Italic</label><label class="check small"><input type="checkbox" data-k="allCaps"> ALL CAPS</label><label class="check small"><input type="checkbox" data-k="smallCaps"> Small caps</label></div>
+        </div>
+        <div class="row duo-only"><label>Emphasis font</label><div id="ePunchFont"></div></div>
+        <div class="row duo-only"><label>Emphasis style</label>
+          <div class="checks"><label class="check small"><input type="checkbox" data-k="punchFauxBold"> Bold</label><label class="check small"><input type="checkbox" data-k="punchFauxItalic"> Italic</label></div>
+        </div>
+        <div class="row"><label>Letter spacing</label><input type="range" data-k="tracking" min="-100" max="300" step="5"><output></output></div>
+        <div class="row duo-only"><label>Emphasis size +%</label><input type="range" data-k="emphSize" min="-40" max="100" step="1"><output></output></div>
+        <div class="row duo-only"><label>Line gap</label><input type="range" data-k="lineGap" min="-60" max="120" step="1"><output></output></div>
+      </details>
+
+      <details class="sec" open>
+        <summary>Fill colour</summary>
+        <div class="row"><label>Fill</label>
+          <div class="seg" id="eFill"><button data-v="solid">Solid colour</button><button data-v="gradient">Gradient</button></div>
+        </div>
+        <div id="fillSolid" class="colors">
+          <label>Text<input type="color" data-k="text"></label>
+          <label class="duo-only">Emphasis<input type="color" data-k="emph"></label>
+        </div>
+        <div id="fillGrad" class="grad">
+          <div class="grad-bar" id="gBar"></div>
+          <div class="row"><label>Direction</label>
+            <select id="gType"><option value="vertical">Top to bottom</option><option value="horizontal">Left to right</option><option value="linear">Any angle</option><option value="radial">Radial (from the centre)</option><option value="angular">Angular (around the centre)</option></select>
+          </div>
+          <div class="row" id="gAngleRow"><label>Angle</label><input type="range" id="gAngle" min="0" max="360" step="1"><output></output></div>
+          <div class="grad-stops" id="gStops"></div>
+          <div class="grad-foot"><button class="btn small ghost" id="gAdd" type="button">+ Add colour</button><span class="muted small" id="gHint"></span></div>
+          <div class="row"><label>Use gradient on</label>
+            <select data-k="gradTarget"><option value="all">All words</option><option value="normal">Normal words only</option><option value="hl">Highlighted words only</option></select>
+          </div>
+          <div class="row"><label>Strength</label><input type="range" data-k="gradient" min="0" max="100" step="1"><output></output></div>
+          <div class="row duo-only"><label>Emphasis strength</label><input type="range" data-k="emphGradient" min="0" max="100" step="1"><output></output></div>
+        </div>
+      </details>
+
+      <details class="sec">
+        <summary>Highlight</summary>
+        <div class="row"><label>Highlight words</label>
+          <select data-k="hlMode"><option value="off">Off</option><option value="active">Word being spoken</option><option value="keywords">Main words only (always)</option><option value="keywordsSpoken">Main words, when spoken</option><option value="fill">Fill as spoken (karaoke)</option></select>
+        </div>
+        <div class="colors"><label>Highlight colour<input type="color" data-k="hl"></label></div>
+        <div class="row"><label>Pop %</label><input type="range" data-k="pop" min="0" max="60" step="1"><output></output></div>
+        <div class="row"><label>Unspoken words opacity</label><input type="range" data-k="unspoken" min="0" max="100" step="5"><output></output></div>
+      </details>
+
+      <details class="sec">
+        <summary>Outline and shadow</summary>
+        <div class="colors"><label>Outline colour<input type="color" data-k="stroke"></label></div>
+        <div class="row"><label>Outline width</label><input type="range" data-k="strokeW" min="0" max="40" step="1"><output></output></div>
+        <div class="row"><label>Drop shadow</label><input type="range" data-k="shadow" min="0" max="100" step="1"><output></output></div>
+      </details>
+
+      <details class="sec">
+        <summary>Glow</summary>
+        <div class="colors"><label>Glow colour<input type="color" data-k="glowColor"></label><label>Deep glow colour<input type="color" data-k="deepGlowColor"></label></div>
+        <div class="row"><label>Soft glow</label><input type="range" data-k="glow" min="0" max="100" step="1"><output></output></div>
+        <div class="row duo-only"><label>Emphasis soft glow</label><input type="range" data-k="emphGlow" min="0" max="100" step="1"><output></output></div>
+        <div class="colors"><label>Glow over text colour<input type="color" data-k="glowOverColor"></label></div>
+        <div class="row"><label>Glow over text</label><input type="range" data-k="glowOver" min="0" max="100" step="1"><output></output></div>
+        <div class="row"><label>Glow over size</label><input type="range" data-k="glowOverSize" min="1" max="100" step="1"><output></output></div>
+        <div class="row"><label>Deep glow <span class="pro">PRO</span></label><input type="range" data-k="deepGlow" min="0" max="100" step="1"><output></output></div>
+        <div class="row"><label>Deep glow radius</label><input type="range" data-k="deepGlowRadius" min="5" max="100" step="1"><output></output></div>
+      </details>
+
+      <details class="sec">
+        <summary>Box</summary>
+        <div class="row"><label>Box</label>
+          <select data-k="box"><option value="off">Off</option><option value="caption">Behind whole caption</option><option value="word">Behind highlighted word</option><option value="emphasis">Behind emphasis line</option><option value="strike">Strike-through line</option></select>
+        </div>
+        <div class="colors"><label>Box colour<input type="color" data-k="boxColor"></label></div>
+        <div class="row"><label>Opacity</label><input type="range" data-k="boxOpacity" min="0" max="100" step="1"><output></output></div>
+        <div class="row"><label>Padding</label><input type="range" data-k="boxPad" min="0" max="80" step="1"><output></output></div>
+        <div class="row"><label>Roundness</label><input type="range" data-k="boxRound" min="0" max="80" step="1"><output></output></div>
+      </details>
+
+      <details class="sec">
+        <summary>Effects <span class="pro">PRO</span></summary>
+        <p class="hint small">Each effect is off at 0. Effects make captions heavier to play back.</p>
+        <div class="fx"><h5>Inner glow</h5>
+          <div class="colors"><label>Colour<input type="color" data-k="innerGlowColor"></label></div>
+          <div class="row"><label>Amount</label><input type="range" data-k="innerGlow" min="0" max="100" step="1"><output></output></div>
+          <div class="row"><label>Size</label><input type="range" data-k="innerGlowSize" min="1" max="100" step="1"><output></output></div>
+          <div class="row"><label>Choke</label><input type="range" data-k="innerGlowChoke" min="0" max="100" step="1"><output></output></div>
+        </div>
+        <div class="fx"><h5>Inner shadow</h5>
+          <div class="colors"><label>Colour<input type="color" data-k="innerShadowColor"></label></div>
+          <div class="row"><label>Amount</label><input type="range" data-k="innerShadow" min="0" max="100" step="1"><output></output></div>
+          <div class="row"><label>Size</label><input type="range" data-k="innerShadowSize" min="1" max="100" step="1"><output></output></div>
+          <div class="row"><label>Distance</label><input type="range" data-k="innerShadowDist" min="0" max="60" step="1"><output></output></div>
+          <div class="row"><label>Angle</label><input type="range" data-k="innerShadowAngle" min="0" max="360" step="1"><output></output></div>
+        </div>
+        <div class="fx"><h5>Light sweep</h5>
+          <div class="colors"><label>Colour<input type="color" data-k="sweepColor"></label></div>
+          <div class="row"><label>Amount</label><input type="range" data-k="sweep" min="0" max="100" step="1"><output></output></div>
+          <div class="row"><label>Width</label><input type="range" data-k="sweepWidth" min="0" max="100" step="1"><output></output></div>
+          <div class="row"><label>Angle</label><input type="range" data-k="sweepAngle" min="-90" max="90" step="1"><output></output></div>
+          <div class="row"><label>Seconds per pass</label><input type="range" data-k="sweepSpeed" min="0.5" max="6" step="0.1"><output></output></div>
+        </div>
+        <div class="fx"><h5>Bevel, 3D and ghost</h5>
+          <div class="colors"><label>3D colour<input type="color" data-k="depthColor"></label></div>
+          <div class="row"><label>Bevel / emboss</label><input type="range" data-k="bevel" min="0" max="100" step="1"><output></output></div>
+          <div class="row"><label>3D depth</label><input type="range" data-k="depth" min="0" max="60" step="1"><output></output></div>
+          <div class="row"><label>Ghost word behind</label><input type="range" data-k="ghost" min="0" max="100" step="1"><output></output></div>
+        </div>
+      </details>
+
+      <details class="sec">
+        <summary>Animation and position</summary>
+        <div class="row"><label>Entry animation</label>
+          <select data-k="anim"><optgroup label="Whole caption"><option value="none">None</option><option value="pop">Pop</option><option value="fade">Fade</option><option value="slide">Slide up</option><option value="bounce">Bounce</option><option value="zoom">Zoom out</option></optgroup><optgroup label="Letter by letter"><option value="flicker">Flicker reveal</option><option value="slam">Letter slam</option><option value="type">Typewriter</option><option value="blurin">Blur in</option><option value="glitch">Glitch</option><option value="drop">Word drop</option></optgroup></select>
+        </div>
+        <div class="row"><label>Speed (frames)</label><input type="range" data-k="speed" min="1" max="30" step="1"><output></output></div>
+        <label class="check"><input type="checkbox" data-k="fadeOut"> Fade out at the end</label>
+        <div class="row"><label>Vertical position %</label><input type="range" data-k="posY" min="0.05" max="0.95" step="0.01" data-pct="1"><output></output></div>
+        <div class="row"><label>Scale %</label><input type="range" data-k="scale" min="30" max="300" step="1"><output></output></div>
+      </details>
+
+      <details class="sec">
+        <summary>Caption length</summary>
+        <div class="row"><label>Words per caption</label><input type="range" data-k="chunk.maxWords" min="1" max="12" step="1"><output></output></div>
+        <div class="row"><label>Characters per line</label><input type="range" data-k="chunk.maxChars" min="6" max="44" step="1"><output></output></div>
+        <div class="row"><label>Lines</label><input type="range" data-k="chunk.maxLines" min="1" max="3" step="1"><output></output></div>
+      </details>
+    </div>
+
+    <!-- fixed at the bottom -->
+    <div class="cs-foot">
+      <button class="btn primary" id="btnSaveNew">Save as new</button>
+      <button class="btn" id="btnSave">Save</button>
+      <button class="btn" id="btnUseEdit">Use for captions</button>
+      <button class="btn ghost" id="btnApplyEdit">Apply to selected</button>
+    </div>
+  </section>
+
+  <!-- ================= EDIT (timeline) ================= -->
+  <section id="tab-edit" class="tab">
+    <div class="card">
+      <h3>Quick changes for selected clips</h3>
+      <p class="hint">Select caption clips in the timeline. Every change goes to them right away and can be undone (Ctrl+Z).
+        The text is never changed here.</p>
+      <details class="sec" open><summary>Font and animation</summary>
+      <div class="row"><label>Caption font</label><div id="qFont"></div></div>
+      <div class="row"><label>Emphasis font</label><div id="qPunchFont"></div></div>
+      <div class="row"><label>Bold / Italic</label><div class="pair"><select data-qb="Bold,Emphasis Bold" title="Bold"><option value="">Bold: keep</option><option value="1">On</option><option value="0">Off</option></select><select data-qb="Italic,Emphasis Italic" title="Italic"><option value="">Italic: keep</option><option value="1">On</option><option value="0">Off</option></select></div></div>
+      <div class="row"><label>ALL CAPS</label><select data-qb="All Caps"><option value="">Keep</option><option value="1">On</option><option value="0">Off</option></select></div>
+      <div class="row"><label>Entry animation</label><select id="qAnim"><option value="">Keep</option><option value="none">None</option><option value="pop">Pop</option><option value="fade">Fade</option><option value="slide">Slide up</option><option value="bounce">Bounce</option><option value="zoom">Zoom out</option><option value="flicker">Flicker reveal</option><option value="slam">Letter slam</option><option value="type">Typewriter</option><option value="blurin">Blur in</option><option value="glitch">Glitch</option><option value="drop">Word drop</option></select></div>
+      <div class="row"><label>Highlight</label><select id="qHl"><option value="">Keep</option><option value="off">Off</option><option value="active">Word being spoken</option><option value="keywords">Main words only</option><option value="keywordsSpoken">Main words, when spoken</option><option value="fill">Fill as spoken</option></select></div>
+      </details>
+      <details class="sec" open><summary>Colours and fill</summary>
+      <div class="colors">
+        <label>Text<input type="color" data-qc="Text Color" value="#ffffff"></label>
+        <label>Emphasis<input type="color" data-qc="Emphasis Color" value="#ffd400"></label>
+        <label>Highlight<input type="color" data-qc="Highlight Color" value="#ffd400"></label>
+        <label>Stroke<input type="color" data-qc="Stroke Color" value="#000000"></label>
+        <label>Glow<input type="color" data-qc="Glow Color" value="#1f6bff"></label>
+        <label>Box<input type="color" data-qc="Box Color" value="#1f6bff"></label>
+      </div>
+      <div class="row"><label>Fill</label><select id="qFill"><option value="">Keep</option><option value="solid">Solid colour</option><option value="gradient">Gradient</option></select></div>
+      <div id="qGrad" class="grad hidden">
+        <div class="grad-bar" id="qgBar"></div>
+        <div class="row"><label>Direction</label>
+          <select id="qgType"><option value="vertical">Top to bottom</option><option value="horizontal">Left to right</option><option value="linear">Any angle</option><option value="radial">Radial (from the centre)</option><option value="angular">Angular (around the centre)</option></select>
+        </div>
+        <div class="row" id="qgAngleRow"><label>Angle</label><input type="range" id="qgAngle" min="0" max="360" step="1"><output></output></div>
+        <div class="grad-stops" id="qgStops"></div>
+        <div class="grad-foot"><button class="btn small ghost" id="qgAdd" type="button">+ Add colour</button><span class="muted small" id="qgHint"></span></div>
+        <div class="row"><label>Use gradient on</label>
+          <select id="qgTarget"><option value="all">All words</option><option value="normal">Normal words only</option><option value="hl">Highlighted words only</option></select>
+        </div>
+      </div>
+      <div class="row"><label>Box</label><select id="qBox"><option value="">Keep</option><option value="off">Off</option><option value="caption">Whole caption</option><option value="word">Highlighted word</option><option value="emphasis">Emphasis line</option><option value="strike">Strike-through</option></select></div>
+      </details>
+      <details class="sec"><summary>Size, outline and spacing</summary>
+      <div class="row"><label>Size %</label><input type="range" id="qScale" min="30" max="300" step="1" value="100"><output></output></div>
+      <div class="row"><label>Vertical position %</label><input type="range" id="qPosY" min="5" max="95" step="1" value="74"><output></output></div>
+      <div class="row"><label>Stroke width</label><input type="range" data-qn="Stroke Width" min="0" max="40" step="1" value="8"><output></output></div>
+      <div class="row"><label>Shadow</label><input type="range" data-qn="Shadow" min="0" max="100" step="1" value="60"><output></output></div>
+      <div class="row"><label>Glow</label><input type="range" data-qn="Glow" min="0" max="100" step="1" value="0"><output></output></div>
+      <div class="row"><label>Glow over text</label><input type="range" data-qn="Glow Over" min="0" max="100" step="1" value="0"><output></output></div>
+      <div class="row"><label>Highlight pop %</label><input type="range" data-qn="Highlight Pop" min="0" max="60" step="1" value="12"><output></output></div>
+      <div class="row"><label>Emphasis size +%</label><input type="range" data-qn="Emphasis Size" min="-40" max="100" step="1" value="0"><output></output></div>
+      <div class="row"><label>Letter spacing</label><input type="range" data-qn="Letter Spacing" min="-100" max="300" step="5" value="0"><output></output></div>
+      <div class="row"><label>Animation speed</label><input type="range" data-qn="Anim Speed" min="1" max="30" step="1" value="6"><output></output></div>
+      </details>
+    </div>
+    <div class="card" id="txCard">
+      <h3>Lyrics clips</h3>
+      <p class="hint">Select Lyrics caption clips in the timeline and press Load. Colour and effect changes go to every selected
+        Lyrics clip right away (Ctrl+Z undoes). Text changes need one clip selected.</p>
+      <div class="actions">
+        <button class="btn primary" id="txLoad">Load selected</button>
+        <span class="muted small" id="txInfo"></span>
+      </div>
+      <div id="txBody" class="hidden">
+        <div class="row"><label>Text</label><input type="text" id="txText"></div>
+        <div class="actions"><button class="btn" id="txTextApply">Set text</button></div>
+        <div id="txCtl"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Text, words and timing</h3>
+      <p class="hint">Select Bunnys caption clips in the timeline and load them. Edit the text freely (Enter = new line),
+        click a word to highlight it, set how long each caption stays on screen, then Apply.</p>
+      <div class="actions">
+        <button class="btn primary" id="btnLoadSel">Load selected clips</button>
+        <button class="btn" id="btnSaveSel">Apply changes</button>
+      </div>
+      <div id="selList" class="edlist"><div class="empty">Nothing loaded.</div></div>
+    </div>
+  </section>
+
+  <!-- ================= SETTINGS ================= -->
+  <section id="tab-settings" class="tab">
+    <div class="card">
+      <h3>Speech engine</h3>
+      <p class="hint">Runs offline on your PC (whisper.cpp). Nothing is uploaded.</p>
+      <div class="row"><label>Processor</label>
+        <select id="procSel"><option value="auto">Auto (GPU if installed)</option><option value="gpu">NVIDIA GPU</option><option value="cpu">CPU only</option></select>
+      </div>
+      <div class="row"><label>GPU</label><span id="gpuName" class="muted">checking</span></div>
+      <div class="row"><label>CPU engine</label><span id="engState" class="muted">checking</span><button class="btn small" id="btnEngine" title="Pick whisper-bin-x64.zip">Install</button></div>
+      <div class="row"><label>GPU engine</label><select id="gpuVarSel"></select><button class="btn small" id="btnGpuEngine" title="Pick the whisper-cublas zip">Install</button></div>
+      <div class="row"><label>Model</label><select id="modelSel"></select></div>
+      <div class="row"><label></label><span id="modelState" class="muted"></span><button class="btn small" id="btnModelFile" title="Pick a ggml-*.bin model file">Install</button><button class="btn small ghost" id="btnModel">Download</button></div>
+      <div class="prog hidden" id="progE"><div class="bar"><i></i></div><div class="ptxt"></div></div>
+      <div class="row"><label>CPU threads</label><input type="range" id="sThreads" min="1" max="16" step="1"><output></output></div>
+      <div class="row"><label>Bangla / Hindi font</label><div id="sIndicFont"></div></div>
+      <div class="row top"><label>Names and words to spell right</label><textarea id="sPrompt" rows="2" placeholder="e.g. Bunnys Framelab, Premiere Pro"></textarea></div>
+    </div>
+    <div class="card">
+      <h3>Offline files</h3>
+      <p class="hint">Keep the engine zips and model files in one folder. The plugin installs and uses them from there, no internet needed.</p>
+      <div class="row"><label>Files folder</label><span id="libPath" class="muted small">not set</span></div>
+      <div class="actions tight">
+        <button class="btn" id="btnLibPick">Choose folder</button>
+        <button class="btn primary" id="btnLibInstall">Install all from folder</button>
+        <button class="btn ghost" id="btnLibOpen">Open folder</button>
+      </div>
+      <p class="hint small" id="libScan"></p>
+    </div>
+    <div class="card">
+      <h3>Timeline</h3>
+      <div class="row"><label>Clips per step</label><input type="range" id="sBatch" min="1" max="30" step="1"><output></output></div>
+      <p class="hint">Lower keeps Premiere more responsive on slower PCs; higher finishes sooner.</p>
+      <pre class="log hidden" id="testLog"></pre>
+      <div class="actions">
+        <button class="btn" id="btnSelfTest" title="Adds one test caption at the playhead, checks everything, then removes it">Run self-test</button>
+        <button class="btn ghost" id="btnDataDir">Open presets folder</button>
+        <button class="btn ghost" id="btnClearTemp">Clear temp files</button>
+      </div>
+    </div>
+    <div class="card about">
+      <img src="assets/logo.png" alt="Bunnys Framelab logo" class="about-logo">
+      <div class="title">Bunnys Caption</div>
+      <div class="muted">Version 1.0.0</div>
+      <div>Created by <b>Bunnys Framelab</b></div>
+      <div class="links">
+        <button class="link" data-url="https://www.instagram.com/bunnysframelab">Instagram @bunnysframelab</button>
+        <button class="link" data-url="https://framelabmedia.odoo.com">framelabmedia.odoo.com</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Bunnys Caption by <b>Bunnys Framelab</b></span>
+  <button class="link" data-url="https://www.instagram.com/bunnysframelab" title="Instagram">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+  </button>
+  <button class="link" data-url="https://framelabmedia.odoo.com" title="Website">Website</button>
+</footer>
+
+<div class="modal hidden" id="modal"><div class="box"><div class="msg"></div><input type="text" class="inp hidden"><div class="actions"><button class="btn ghost" data-r="0">Cancel</button><button class="btn primary" data-r="1">OK</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>if (typeof require === 'undefined') document.write('<script src="dev/shim.js"><\/script>');</script>
+<script src="js/main.js"></script>
+</body>
+</html>

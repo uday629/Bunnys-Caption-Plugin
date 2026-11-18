@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bunnys Caption: Read Me</title>
+  <style>
+    :root {
+      --bg: #08080A; --card: rgba(255, 255, 255, 0.045); --edge: rgba(255, 255, 255, 0.09);
+      --text: rgba(255, 255, 255, 0.94); --muted: rgba(235, 235, 245, 0.62); --faint: rgba(235, 235, 245, 0.38);
+      --code-bg: rgba(255, 255, 255, 0.07); --blue: #1F6BFF; --orange: #FF8A00; --green: #30d158;
+      --brand: linear-gradient(135deg, #1F6BFF 0%, #6A2BFF 50%, #FF1F56 100%);
+      --glow-1: rgba(31, 107, 255, 0.22); --glow-2: rgba(255, 31, 86, 0.14);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text);
+      font: 16px/1.6 "Segoe UI", Inter, -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(45% 35% at 8% 0%, var(--glow-1), transparent 70%),
+                  radial-gradient(40% 30% at 96% 12%, var(--glow-2), transparent 70%); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 48px 16px 64px; }
+    a { color: #6FA0FF; text-decoration: none; } a:hover { text-decoration: underline; }
+    code { font: 0.88em Consolas, Menlo, monospace; background: var(--code-bg); border: 1px solid var(--edge);
+      border-radius: 6px; padding: 1px 6px; }
+    .file { font-weight: 600; }
+    .grad { background: var(--brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .hero { display: flex; gap: 20px; align-items: center; margin-bottom: 28px; }
+    .hero img { width: 88px; height: 88px; border-radius: 22px; flex: none; box-shadow: 0 14px 34px rgba(106, 43, 255, 0.4); }
+    h1 { margin: 0; font-size: 44px; line-height: 1.05; letter-spacing: -1.2px; }
+    .tagline { margin: 6px 0 0; font-size: 19px; color: var(--muted); }
+    .byline { margin: 8px 0 0; font-size: 14px; color: var(--faint); }
+
+    .card { background: var(--card); border: 1px solid var(--edge); border-radius: 20px; padding: 24px 26px; margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+    .intro { font-size: 17px; } .intro p { margin: 0; }
+    .shot { display: block; width: 100%; border-radius: 14px; border: 1px solid var(--edge); margin-top: 16px; }
+
+    h2 { margin: 0 0 12px; font-size: 24px; letter-spacing: -0.4px; }
+    h3 { font-size: 16px; margin: 20px 0 8px; display: flex; align-items: center; gap: 8px; }
+    .pill { font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--code-bg);
+      border: 1px solid var(--edge); color: var(--muted); }
+    .pill.pro { color: #fff; background: var(--brand); border: 0; }
+    ul, ol { margin: 0; padding-left: 22px; } li { margin: 5px 0; } li::marker { color: var(--faint); }
+
+    .feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .feat { padding: 14px 16px; border-radius: 14px; background: var(--code-bg); border: 1px solid var(--edge); }
+    .feat b { display: block; font-size: 15px; margin-bottom: 2px; }
+    .feat span { font-size: 13.5px; color: var(--muted); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+    th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--edge); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    td.tab { font-weight: 600; white-space: nowrap; }
+    .models td:nth-child(2) { white-space: nowrap; color: var(--muted); }
+
+    .note { margin-top: 14px; padding: 10px 14px; border-radius: 12px; font-size: 14.5px; color: var(--muted);
+      background: var(--code-bg); border-left: 3px solid var(--blue); }
+    .note.warn { border-left-color: var(--orange); } .note.good { border-left-color: var(--green); }
+
+    .cta { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 12px; font-weight: 600;
+      font-size: 14.5px; border: 1px solid var(--edge); background: var(--card); color: var(--text); }
+    .btn:hover { text-decoration: none; border-color: var(--blue); }
+    .btn.main { background: var(--brand); border: 0; color: #fff; }
+    .support { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    footer { text-align: center; color: var(--faint); font-size: 13px; margin-top: 30px; }
+
+    @media (max-width: 680px) {
+      .wrap { padding-top: 28px; } .hero { flex-direction: column; align-items: flex-start; } h1 { font-size: 36px; }
+      .feats { grid-template-columns: 1fr; } .card { padding: 20px 16px; } td.tab { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <img src="Plugin/assets/logo.png" alt="Bunnys Caption logo">
+    <div>
+      <h1 class="grad">Bunnys Caption</h1>
+      <p class="tagline">Auto captions for Adobe Premiere Pro and After Effects</p>
+      <p class="byline">Made by Bunnys Framelab · <a href="https://www.instagram.com/bunnysframelab">Instagram</a> · <a href="https://framelabmedia.odoo.com">Website</a></p>
+    </div>
+  </header>
+
+  <div class="card intro">
+    <p>Bunnys Caption listens to your video, writes the captions and places them on your Premiere timeline,
+    <b>each caption as its own editable clip</b>, styled and animated. Everything runs on your own PC:
+    no internet, no account, no upload.</p>
+    <img class="shot" src="Plugin preview.png" alt="The Bunnys Caption panel: Generate, Styles and Customize tabs">
+  </div>
+
+  <section class="card cta">
+    <div><h2 style="margin:0">Ready to install?</h2><span style="color:var(--muted)">Windows and Mac. Four short steps, about 5 minutes.</span></div>
+    <a class="btn main" href="INSTALLATION.html">Open the installation guide →</a>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="card">
+    <h2>What it does</h2>
+    <div class="feats">
+      <div class="feat"><b>Auto captions</b><span>English, Bangla, Banglish, Hindi and Hinglish</span></div>
+      <div class="feat"><b>Translate</b><span>English captions from Bangla, Hindi or any language, on your PC</span></div>
+      <div class="feat"><b>Word highlight</b><span>Active word, keywords, karaoke fill</span></div>
+      <div class="feat"><b>50+ styles</b><span>Ready looks, plus your own saved styles</span></div>
+      <div class="feat"><b>Full control</b><span>Font, bold, italic, caps, colours, 5-colour gradient, glow, box, animation</span></div>
+      <div class="feat"><b>PRO looks</b><span>3D depth, bevel, inner glow and shadow, light sweep, deep glow</span></div>
+      <div class="feat"><b>Your MOGRTs</b><span>Use any .mogrt template as a caption style</span></div>
+      <div class="feat"><b>Capture</b><span>Tweak a caption on the timeline, save it as a style</span></div>
+      <div class="feat"><b>Undo / Redo</b><span>Every change, with Ctrl+Z and Ctrl+Y</span></div>
+    </div>
+  </section>
+
+  <!-- HOW TO USE -->
+  <section class="card">
+    <h2>How to use it</h2>
+    <table>
+      <tr><th>Tab</th><th>What you do there</th></tr>
+      <tr><td class="tab">Generate</td><td>Pick the language → <b>Transcribe</b> → check the text → <b>Add captions</b>.</td></tr>
+      <tr><td class="tab">Styles</td><td>Click a style to use it. <b>Apply to selected clips</b> restyles captions you selected on the timeline. <b>Import</b> adds a .json style or your own .mogrt. <b>Capture from clip</b> saves a caption's look as a new style.</td></tr>
+      <tr><td class="tab">Customize</td><td>Change everything about a style. <b>Save as new</b> keeps it, <b>Reset</b> goes back to the saved version, <b>Live</b> sends every change straight to the selected captions.</td></tr>
+      <tr><td class="tab">Edit</td><td>Quick font, colour and animation changes on selected captions, plus text and timing editing.</td></tr>
+      <tr><td class="tab">Settings</td><td>Engine, model, CPU or GPU, the offline files folder and a self-test.</td></tr>
+    </table>
+  </section>
+
+  <!-- CPU GPU -->
+  <section class="card">
+    <h2>CPU or GPU?</h2>
+    <table>
+      <tr><th>Your PC</th><th>What to use</th><th>Speed</th></tr>
+      <tr><td>Any PC</td><td>CPU engine (always installed)</td><td>A 1-minute video in about 10-60 s</td></tr>
+      <tr><td>NVIDIA RTX 20 / 30 / 40 / 50</td><td>GPU engine, CUDA 12</td><td>3 to 10 times faster</td></tr>
+      <tr><td>NVIDIA GTX 10 / 16</td><td>GPU engine, CUDA 11</td><td>3 to 5 times faster</td></tr>
+      <tr><td>AMD or Intel graphics</td><td>CPU engine</td><td>As above</td></tr>
+      <tr><td>Mac with Apple Silicon (M1-M4)</td><td>Homebrew engine, uses the Apple GPU (Metal) by itself</td><td>Fast, similar to a mid-range NVIDIA card</td></tr>
+      <tr><td>Intel Mac</td><td>Homebrew engine on the CPU</td><td>Slower, use a small model</td></tr>
+    </table>
+    <div class="note">Settings → Processor → <b>Auto (GPU if installed)</b> uses the GPU when it can and falls back to the CPU by itself.
+      The very first GPU run takes 30-45 seconds to warm up.</div>
+  </section>
+
+  <!-- MODELS -->
+  <section class="card">
+    <h2>Which model, when and why</h2>
+    <p style="margin:0 0 12px;color:var(--muted)">A model is the "brain" that turns speech into text. Bigger models make fewer mistakes,
+      but are slower and use more disk space. You only need the model for your language.</p>
+    <table class="models">
+      <tr><th>Model</th><th>Size</th><th>Use it for</th></tr>
+      <tr><td><b>English · Recommended</b> (Base)</td><td>60 MB</td><td>English videos. The best balance, start here.</td></tr>
+      <tr><td>English · Most Accurate (Small)</td><td>190 MB</td><td>English with accents, music or noise.</td></tr>
+      <tr><td>English · Fastest (Tiny)</td><td>32 MB</td><td>Very slow PCs. More mistakes.</td></tr>
+      <tr><td><b>Bangla Pro</b></td><td>540 MB</td><td>Bangla and Banglish. Trained on Bangla speech: far fewer mistakes, and fast.</td></tr>
+      <tr><td><b>Multi-language · Best for Hindi</b> (Large v3 Turbo)</td><td>574 MB</td><td>Hindi, Hinglish and most other languages. Best with a GPU.</td></tr>
+      <tr><td>Multi-language · Most Accurate (Large v3)</td><td>1.1 GB</td><td>Any language, top quality, slowest.</td></tr>
+      <tr><td>Multi-language · Medium (Small)</td><td>190 MB</td><td>Other languages on slow PCs.</td></tr>
+      <tr><td>Multi-language · Fast (Base)</td><td>60 MB</td><td>Quick tests only. Not good for Bangla.</td></tr>
+      <tr><td>Voice Detector</td><td>1 MB</td><td>Finds where people speak, even under music. Always needed.</td></tr>
+      <tr><td>Translator Model + Engine</td><td>2.8 GB</td><td>Only for English captions from Bangla or Hindi speech.</td></tr>
+    </table>
+    <div class="note warn">In the Generate tab, pick the language yourself. "Any language" can mistake Bangla for Hindi.</div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="card">
+    <h2>How it works</h2>
+    <ol>
+      <li>The panel exports the sequence audio.</li>
+      <li>The voice detector cuts the audio at pauses.</li>
+      <li>The speech engine (whisper.cpp) and your model write the text, with the time of every word.</li>
+      <li>For Bangla and Hindi, a word list fixes common spelling mistakes.</li>
+      <li>The text is split into short captions using the style's rules.</li>
+      <li>Each caption lands on the timeline as a <b>Bunnys Caption</b> graphic with the style applied.</li>
+    </ol>
+  </section>
+
+  <!-- PACKAGE -->
+  <section class="card">
+    <h2>What is in this folder</h2>
+    <table>
+      <tr><th>File or folder</th><th>What it is</th></tr>
+      <tr><td><span class="file">INSTALLATION.html</span></td><td>Step-by-step install guide</td></tr>
+      <tr><td><span class="file">README.html</span></td><td>This page</td></tr>
+      <tr><td><span class="file">Plugin</span></td><td>The panel for Premiere Pro and After Effects. <code>Install on Windows.bat</code> / <code>Install on Mac.command</code> install it, the Uninstall files remove it.</td></tr>
+      <tr><td><span class="file">Offline Files</span></td><td>Engines and models in 6 folders, one per use. Keep only what you need.</td></tr>
+      <tr><td><span class="file">Fonts</span></td><td>Fonts the 22 Lyrics styles use. The installer installs them for you (Windows: your user fonts, Mac: ~/Library/Fonts).</td></tr>
+      <tr><td><span class="file">Source</span></td><td>For developers only: builds the caption templates in After Effects.</td></tr>
+    </table>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="card">
+    <h2>Help and support</h2>
+    <p style="margin:0;color:var(--muted)">Something not working? Settings → <b>Run self-test</b>, then send the report to us.</p>
+    <div class="support">
+      <a class="btn" href="https://www.instagram.com/bunnysframelab">📸 Instagram</a>
+      <a class="btn" href="https://framelabmedia.odoo.com">🌐 Website</a>
+    </div>
+  </section>
+
+  <footer>Bunnys Caption 1.2.0 · Made by Bunnys Framelab · Uses whisper.cpp (MIT), llama.cpp (MIT), OpenAI Whisper (MIT),
+    Silero VAD (MIT) and Qwen3-4B (Apache-2.0). Premiere Pro and After Effects are trademarks of Adobe; Bunnys Caption is not made by Adobe.</footer>
+</div>
+</body>
+</html>

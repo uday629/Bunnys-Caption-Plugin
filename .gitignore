@@ -1,0 +1,11 @@
+# Offline engines and models are downloaded by the panel (too big for git)
+Offline Files/
+*.gguf
+ggml-*.bin
+whisper-*.zip
+llama-*.zip
+# local files
+*.log
+settings.json
+.DS_Store
+Thumbs.db
