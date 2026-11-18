@@ -119,9 +119,21 @@ On Mac the engines come from Homebrew (`brew install whisper-cpp`, and `brew ins
 | `Plugin/js/` | Panel code: speech engine, captions, styles, translator, previews |
 | `Plugin/mogrt/` | Caption templates: `Bunnys Caption`, `Bunnys Caption Pro` and `Lyrics/` (22 lyric templates) |
 | `Plugin/dict/` | Bangla and Hindi word lists for spelling fixes |
-| `Fonts/` | Fonts the Lyrics styles use (installed by the installer) |
+| `Fonts/` | Free fonts the Lyrics styles use (installed by the installer). Five fonts are not included, see below |
 | `Source/` | For developers: After Effects scripts that build the caption and Lyrics templates |
 | `docs/` | Screenshots for this page |
+
+## Fonts not included
+
+Some Lyrics styles use fonts with their own licence. They are **not** in this repository. Install them yourself (the installer and the styles use the family names, so the same family name is enough):
+
+- Arial Bold (Microsoft)
+- Impact (Microsoft)
+- Gill Sans Ultra Bold (Monotype)
+- Akira Expanded Super Bold
+- Sloop ScriptThree
+
+Without them, the styles still work and fall back to a similar system font.
 
 ## Troubleshooting
 
